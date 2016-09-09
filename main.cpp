@@ -60,23 +60,3 @@ void mainMenu() {
 	}
 	mainMenu();
 }
-
-/*
-company& operator+(company& a, company& b) {
-	if (a.getType() != b.getType())	throw differrntCompException();
-	company* tmp = new company(a);
-	tmp->setAmount(a.getAmount() + b.getAmount());
-	tmp->setValue((a.getValue() + b.getValue()) / 2);
-	tmp->setName(a.getName() + "&" + b.getName());
-	tmp->setDepartament(a.getDepartament() + "&" + b.getDepartament());
-	if (securities::Secu.find(a.getName()) != securities::Secu.end()) {}
-	
-	companies::comps.erase(a.getName());
-	companies::comps.erase(b.getName());
-	//securities::Secu.erase(a.getName());
-//	securities::Secu.erase(b.getName());
-	return *tmp;
-}
-*/
-//companies::comps
-//securities::Secu

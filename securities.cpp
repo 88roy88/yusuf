@@ -4,7 +4,7 @@ map<string, Security*> securities::Secu = map<string, Security*>();
 
 void securities::menu() {
 	startMenu();
-	enum Comand { EXIT, BUY, SELL, PRINT, PRINT_LIST }; // i think we need option of Create
+	enum Comand { EXIT, BUY, SELL, PRINT, PRINT_LIST };
 	Comand cmd;
 	int tmp;
 	cout + "to buy a security    " << TAB3 << "press " << BUY << endl;
@@ -24,11 +24,10 @@ void securities::menu() {
 		catch (NotExistComp& e) {
 			char a;
 			cout + e.what() << endl;
-			cout + "are you want to add this company? (y\\n): ";
+			cout + "are you want to add this company? (y\n): ";
 			cin >> a;
-			if ((a == 'y') || (a == 'Y')) {
+			if ((a == 'y') || (a == 'Y'))
 				companies::create(e.getName());
-			}
 			try {
 				buy(e.getName());
 			}
@@ -69,53 +68,39 @@ void securities::menu() {
 	default:
 		break;
 	}
+	cout << endl << TAB << "continue, Mr. Wong?";
+	cin.get();
+	cin.get();
 	menu();
 }
 
-void securities::buy(string nam) {
+void securities::buy(string nam="") {
 	int amo;
 	if (nam == "") {
 		cout + "enter company name to buy securities: ";
 		cin >> nam;
 	}
-
 	if (companies::comps.find(nam) == companies::comps.end()) throw NotExistComp("buy security for ", nam);
-	if (Secu.find(nam) == Secu.end()) {
-		cout + "the Security need to be configured first" << endl;
-		create(nam, 0);
-	}	
-	cout + "how many securities you want to buy of this company?  (" << companies::comps.find(nam)->second->getValue() << "$ per unit)" << endl;
+	cout + "how many securities you wa.nt to buy of this company?  (" << companies::comps.find(nam)->second->getValue() << "$ per unit)" << endl;
 	cout + "limited by " << companies::comps.find(nam)->second->getAmount() - Secu.find(nam)->second->getAmount() << ": ";
 	cin >> amo;
 	map<string, Security*>::iterator it = Secu.find(nam);
+	if (it == Secu.end()) { create(nam, amo); return; }
 	it->second->buy(amo);
-	cout + "thank you!" << endl << TAB << "* the " << securities::Secu.find(nam)->second->getType() << " bought successfully!*" << endl;
+	cout + "thank you!" << endl << TAB << "! the " << securities::Secu.find(nam)->second->getType() << " bought successfully!" << endl;
 }
 
 void securities::sell() {
 	string nam;
-	string Type;
 	int to_sell;
 	cout + "please enter security name to sell: ";
 	cin >> nam;
 	if (companies::comps.find(nam) == companies::comps.end()) throw NotExistComp("sell security", nam);
-	if (Secu.find(nam) == Secu.end()) {  // the follow 2 liens could be an excpsion
-		cout + "the Security need to be configured first" << endl;
-		create(nam, 0);
-		cout + "you have no " << Secu.find(nam)->second->getType() << " to sell"<< endl;
-		return;
-	}
-	cout + "limited by " << companies::comps.find(nam)->second->getAmount() - Secu.find(nam)->second->getAmount() << ": ";
 	cout + "how securities to sell: ";
 	cin >> to_sell;
 	Secu.find(nam)->second->sell(to_sell);
-	if (Secu.find(nam)->second->getAmount() == 0) {
-		Type = securities::Secu.find(nam)->second->getType();
-		if (Secu.erase(nam) == 0)
-			throw NotExistComp("erase", nam);
-		cout + "the " << Type << " " << nam << " successfuly deleted!" << endl;
-	}
-	cout + "the " << Type << " selled successfully!" << endl;
+	if (Secu.find(nam)->second->getAmount() == 0) Secu.erase(nam);
+	cout + "the " << securities::Secu.find(nam)->second->getType() << " selled successfully!" << endl;
 }
 
 void securities::printSecurity() {
@@ -125,7 +110,6 @@ void securities::printSecurity() {
 	map<string, Security*>::iterator it = Secu.find(nam);
 	if (it == Secu.end()) throw NotExistComp("print a security", nam);
 	else cout << (it->second);
-	//if (Secu.find(nam) == Secu.end()) { create(nam, 0); }
 }
 
 void securities::printList() {
@@ -142,7 +126,6 @@ void securities::create(string nam, int amo) {
 	int inte;
 	bool trade;
 	int y, m, d;
-	if (companies::comps.find(nam)==companies::comps.end()) throw NotExistComp("buy stock of",nam);
 	if (amo > companies::comps.find(nam)->second->getAmount()) throw OutOfAmount();
 	switch (companies::comps.find(nam)->second->getType()) {
 	case company::PRIVATE: 
@@ -165,5 +148,5 @@ void securities::create(string nam, int amo) {
 		Secu.insert(pair<string, Security*>(nam, new shareBond(nam, trade, Date(d,m,y), amo, inte)));
 		break;
 	}
-	cout + "*! the " << Secu.find(nam)->second->getType() << " was configured!*" << endl;
+	cout + "thank you!" << endl << TAB << "! the " << securities::Secu.find(nam)->second->getType() << " bought successfully!" << endl;
 }

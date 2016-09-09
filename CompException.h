@@ -43,7 +43,7 @@ class NotExistComp : public exception {
 	string name, act;
 	string msg;
 public:
-	NotExistComp(string a, string b) :act(a), name(b) { msg = "you tried to " + act + " " + name + " but it isn't exist"; };
+	NotExistComp(string a, string b) :act(a), name(b) { msg = "you tried to " + act + name + " but he isn't exist"; };
 	const char* what()const {
 		return msg.c_str();
 	}
@@ -54,12 +54,5 @@ class OutOfAmount : public exception {
 public:
 	const char* what()const {
 		return "you cant buy more security then there is...";
-	}
-};
-
-class alreadyExist : public exception {
-public:
-	const char* what()const {
-		return "the company name is token";
 	}
 };

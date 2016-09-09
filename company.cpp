@@ -27,4 +27,15 @@ void company::printExtra() const {
 	cout <</* "\t\t\t" << name << endl <<*/ "department\t:\t\t" << department << endl << "type\t\t:\t\t" << getStringType() << endl;
 }
 
+company& operator+(company& a, company& b) {
+	if (a.getType() != b.getType())	throw differrntCompException();
+	company* tmp = new company(a);
+	tmp->setAmount(a.getAmount() + b.getAmount());
+	tmp->setValue((a.getValue() + b.getValue()) / 2);
+	tmp->setName(a.getName() + "&" + b.getName());
+	tmp->setDepartament(a.getDepartament() + "&" + b.getDepartament());
+
+	return *tmp;
+}
+
 ostream& operator<<(ostream& os, const company& comp) { return comp.print(os); }

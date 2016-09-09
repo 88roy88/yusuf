@@ -10,7 +10,7 @@ public:
 	static map<string, Security*> Secu;
 
 	static void menu();
-	static void buy(string nam = "");
+	static void buy(string nam="");
 	static void sell();
 	static void printSecurity();
 	static void printList();

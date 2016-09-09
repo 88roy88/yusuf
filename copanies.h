@@ -12,7 +12,6 @@ public:
 	static void menu();
 	static void create(string name ="");
 	static void erase();
-	static void mesh();
 	static void printCompany();
 	static void printList();
 
